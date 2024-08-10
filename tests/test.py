@@ -1,4 +1,4 @@
-def get_mask_card_number(card_number: str) -> str:
+def get_mask_card_number(card_number):
     """
     Функция принимает на вход номер карты и возвращает ее маску.
 
@@ -19,7 +19,7 @@ def get_mask_card_number(card_number: str) -> str:
 # print(masked_card_number)
 
 
-def get_mask_account(account_number: str) -> str:
+def get_mask_account(account_number):
     """
     Функция принимает на вход номер счета и возвращает его маску.
 
@@ -37,4 +37,4 @@ def get_mask_account(account_number: str) -> str:
 # Пример использования
 # account_number = "73654108430135874305"
 # masked_account = get_mask_account(account_number)
-# print(masked_account)  # Вывод: **4305
+# # print(masked_account)  # Вывод: **4305
