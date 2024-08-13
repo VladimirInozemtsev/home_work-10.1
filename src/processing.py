@@ -34,3 +34,32 @@ def filter_by_state(data: list, state: str = 'EXECUTED') -> list:
 # print(filter_by_state(data, 'CANCELED')) # Вывод: [{'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'}, {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]
 
 
+def sort_by_date(data: list, reverse: bool = True) -> list:
+  """
+  Функция принимает список словарей и необязательный параметр, задающий порядок сортировки (по умолчанию — убывание).
+  Функция должна возвращать новый список, отсортированный по дате (date).
+
+  Args:
+      data: Список словарей.
+      reverse: Порядок сортировки (True — убывание, False — возрастание).
+
+  Returns:
+      Новый список, отсортированный по дате.
+  """
+
+  return sorted(data, key=lambda item: item['date'], reverse=reverse)
+
+
+# Сортировка по убыванию (по умолчанию)
+# print(sort_by_date(data))
+# Вывод: [{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+#         {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
+#         {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
+#         {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]
+
+# Сортировка по возрастанию
+# print(sort_by_date(data, reverse=False))
+# Вывод: [{'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
+#         {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
+#         {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
+#         {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'}]
