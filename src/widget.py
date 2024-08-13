@@ -49,6 +49,6 @@ def get_date(date_string: str) -> str:
 
 
 # Пример использования:
-date_string = "2024-03-11T02:26:18.671407"
-formatted_date = get_date(date_string)
-print(formatted_date)  # Вывод: 11.03.2024
+# date_string = "2024-03-11T02:26:18.671407"
+# formatted_date = get_date(date_string)
+# print(formatted_date)  # Вывод: 11.03.2024
