@@ -9,14 +9,15 @@ def get_mask_card_number(card_number: str) -> str:
         Маскированный номер карты в формате XXXX XX** **** XXXX.
     """
 
+    if len(card_number) != 16:
+        raise ValueError("Номер карты должен быть 16-значным.")
+
     masked_card_number = card_number[:4] + " " + card_number[4:6] + "**" + " " + "*" * 4 + " " + card_number[-4:]
     return masked_card_number
 
 
-# Пример использования
-# card_number = "7000792289606361"
-# masked_card_number = get_mask_card_number(card_number)
-# print(masked_card_number)
+# card_number = "1234567890123456"
+# print(get_mask_card_number(card_number))
 
 
 def get_mask_account(account_number: str) -> str:
@@ -30,11 +31,8 @@ def get_mask_account(account_number: str) -> str:
         Маскированный номер счета в формате **XXXX.
     """
 
+    if len(account_number) != 6:
+        raise ValueError("Номер счета должен быть 6-значным.")
+
     masked_account = "**" + account_number[-4:]
     return masked_account
-
-
-# Пример использования
-# account_number = "73654108430135874305"
-# masked_account = get_mask_account(account_number)
-# print(masked_account)  # Вывод: **4305
