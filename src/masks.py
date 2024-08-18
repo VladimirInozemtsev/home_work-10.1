@@ -31,8 +31,8 @@ def get_mask_account(account_number: str) -> str:
         Маскированный номер счета в формате **XXXX.
     """
 
-    if len(account_number) != 6:
-        raise ValueError("Номер счета должен быть 6-значным.")
+    if len(account_number) < 6:
+        raise ValueError("Номер счета должен быть минимум 6-значным.")
 
     masked_account = "**" + account_number[-4:]
     return masked_account
