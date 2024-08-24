@@ -15,16 +15,18 @@ def test_mask_card_number_valid(card_number, expected_masked_number):
     assert get_mask_card_number(card_number) == expected_masked_number
 
 
+def test_mask_card_number_valid_(mask_card_number):
+    assert get_mask_card_number(mask_card_number) == "1234 56** **** 3456"
+
+
 @pytest.mark.parametrize("card_number, expected", [("12345", ValueError), ("", ValueError), ("0", ValueError)])
 def test_mask_card_number_invalid_input(card_number, expected):
     with pytest.raises(expected):
         get_mask_card_number(card_number)
 
 
-def test_mask_account_valid():
-    account_number = "123456"
-    expected_masked_number = "**3456"
-    assert get_mask_account(account_number) == expected_masked_number
+def test_mask_account_valid(account_number):
+    assert get_mask_account(account_number) == "**3456"
 
 
 @pytest.mark.parametrize(
