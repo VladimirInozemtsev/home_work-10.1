@@ -16,6 +16,9 @@ git clone https://github.com/VladimirInozemtsev/home_work-10.1.git
 ```
 pip install -r requirements.txt
 ```
+## Тестирование:
+
+В проект добавлены тесты для всех функций. Чтобы запустить тестирование, введите в терминале команду pytest.
 
 ## Лицензия:
 
