@@ -26,5 +26,3 @@ def test_log_error(capsys):
     assert "my_function_2 started" in captured.out
     assert "my_function_2 error: <class 'ZeroDivisionError'>" in captured.out
     assert "(1, 0)" in captured.out
-
-

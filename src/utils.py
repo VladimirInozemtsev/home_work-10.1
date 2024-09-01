@@ -1,5 +1,5 @@
 import json
-import os
+
 
 def read_transactions_from_json(filepath):
     """
@@ -24,6 +24,4 @@ def read_transactions_from_json(filepath):
     except FileNotFoundError:
         return []
     except json.JSONDecodeError:
-        return []
-    except:
         return []
