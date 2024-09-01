@@ -1,0 +1,10 @@
+my_function started
+my_function ok
+my_function started
+my_function ok
+my_function started
+my_function ok
+my_function started
+my_function ok
+my_function started
+my_function ok
