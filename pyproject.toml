@@ -47,6 +47,3 @@ exclude = '''
 [tool.isort]
 # максимальная длина строки
 line_length = 119
-
-[tool.poetry.packages]
-include = ["src"]

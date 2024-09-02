@@ -52,5 +52,5 @@ class TestExternalAPI(unittest.TestCase):
         self.assertIsNone(amount_rub)
 
 
-#if __name__ == "__main__":
-   # unittest.main()
+# if __name__ == "__main__":
+# unittest.main()
