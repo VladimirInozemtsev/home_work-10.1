@@ -4,36 +4,34 @@ from dotenv import load_dotenv
 
 load_dotenv()  # Загружаем переменные окружения из .env
 
-
 class ExternalAPIError(Exception):
     """
     Исключение, которое возникает при ошибке обращения к внешнему API.
     """
-
     pass
 
-
-def get_currency_rate(base_currency, target_currency):
+def get_currency_rate(from_currency, to_currency, amount):
     """
     Получает курс валюты с помощью Exchange Rates Data API.
 
     Args:
-        base_currency: Базовая валюта.
-        target_currency: Целевая валюта.
+        from_currency: Базовая валюта.
+        to_currency: Целевая валюта.
+        amount: Сумма, которую нужно конвертировать.
 
     Returns:
         Курс валюты.
     """
 
-    api_key = os.getenv("EXCHANGE_RATES_API_KEY")
-    url = f"https://api.apilayer.com/exchangerates_data/latest?base={base_currency}"
+    api_key = os.getenv('EXCHANGE_RATES_API_KEY')
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to={to_currency}&from={from_currency}&amount={amount}"
     headers = {"apikey": api_key}
 
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Проверка на ошибки HTTP
         data = response.json()
-        return data["rates"][target_currency]
+        return data['result']
     except requests.exceptions.RequestException as e:
         raise ExternalAPIError(f"Ошибка запроса к API: {e}")
 
