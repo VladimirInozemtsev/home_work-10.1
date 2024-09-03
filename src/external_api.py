@@ -24,8 +24,13 @@ def get_currency_rate(from_currency, to_currency, amount):
     """
 
     api_key = os.getenv('EXCHANGE_RATES_API_KEY')
-    url = f"https://api.apilayer.com/exchangerates_data/convert?to={to_currency}&from={from_currency}&amount={amount}"
-    headers = {"apikey": api_key}
+    url = 'https://api.apilayer.com/exchangerates_data/convert'
+    params = {
+        'to': to_currency,
+        'from': from_currency,
+        'amount': amount,
+    }
+    headers = {'apikey': api_key}
 
     try:
         response = requests.get(url, headers=headers)
@@ -54,8 +59,8 @@ def convert_amount_to_rub(transaction):
         return float(amount)
     elif currency in ("USD", "EUR"):
         try:
-            rate = get_currency_rate(currency, "RUB")
-            return float(amount) * rate
+           result = get_currency_rate(currency, "RUB")
+            return round(result, 2)
         except ExternalAPIError as e:
             print(f"Ошибка конвертации: {e}")
             return None  # Возвращаем None в случае ошибки

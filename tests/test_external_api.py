@@ -11,8 +11,8 @@ class TestExternalAPI(unittest.TestCase):
         mock_response.status_code = 200
         mock_response.json.return_value = {"rates": {"RUB": 75.0}}
 
-        rate = get_currency_rate("USD", "RUB")
-        self.assertEqual(rate, 75.0)
+        rate = get_currency_rate("USD", "RUB", 10)
+        self.assertEqual(rate, 750.0)
 
     @patch("external_api.requests.get")
     def test_get_currency_rate_error(self, mock_get):
