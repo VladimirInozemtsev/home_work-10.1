@@ -1,50 +1,57 @@
-import unittest, json
-from unittest.mock import patch
+import unittest
+import json
 from src.utils import read_transactions_from_json
 
+class TestReadTransactionsFromJson(unittest.TestCase):
 
-class TestUtils(unittest.TestCase):
-    @patch("utils.open", create=True)
-    def test_read_transactions_from_json_success(self, mock_open):
-        mock_file = mock_open.return_value.__enter__.return_value
-        mock_file.read.return_value = json.dumps(
-            [{"amount": "100", "currency": "RUB"}, {"amount": "50", "currency": "USD"}]
-        )
-        filepath = "data/operations.json"
+    def test_read_valid_json(self):
+        """Проверяет чтение корректного JSON-файла."""
+        filepath = "test_transactions.json"
+        with open(filepath, "w") as file:
+            json.dump([
+                {"amount": 100, "currency": "USD"},
+                {"amount": 50, "currency": "EUR"}
+            ], file)
+
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(len(transactions), 2)
+        self.assertEqual(transactions[0]["amount"], 100)
+        self.assertEqual(transactions[0]["currency"], "USD")
+        self.assertEqual(transactions[1]["amount"], 50)
+        self.assertEqual(transactions[1]["currency"], "EUR")
 
-    @patch("utils.open", create=True)
-    def test_read_transactions_from_json_empty_file(self, mock_open):
-        mock_file = mock_open.return_value.__enter__.return_value
-        mock_file.read.return_value = ""
-        filepath = "data/operations.json"
+    def test_read_empty_file(self):
+        """Проверяет чтение пустого JSON-файла."""
+        filepath = "empty_transactions.json"
+        with open(filepath, "w") as file:
+            pass  # Создаем пустой файл
+
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(transactions, [])
 
-    @patch("utils.open", create=True)
-    def test_read_transactions_from_json_invalid_json(self, mock_open):
-        mock_file = mock_open.return_value.__enter__.return_value
-        mock_file.read.return_value = "invalid json"
-        filepath = "data/operations.json"
+    def test_read_invalid_json(self):
+        """Проверяет чтение файла с некорректным JSON."""
+        filepath = "invalid_transactions.json"
+        with open(filepath, "w") as file:
+            file.write("This is not valid JSON")
+
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(transactions, [])
 
-    @patch("utils.open", create=True)
-    def test_read_transactions_from_json_not_list(self, mock_open):
-        mock_file = mock_open.return_value.__enter__.return_value
-        mock_file.read.return_value = json.dumps({"amount": "100", "currency": "RUB"})
-        filepath = "data/operations.json"
+    def test_read_non_list_json(self):
+        """Проверяет чтение JSON-файла, содержащего не список."""
+        filepath = "non_list_transactions.json"
+        with open(filepath, "w") as file:
+            json.dump({"amount": 100, "currency": "USD"}, file)
+
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(transactions, [])
 
-    @patch("utils.open")
-    def test_read_transactions_from_json_file_not_found(self, mock_open):
-        mock_open.side_effect = FileNotFoundError
-        filepath = "data/operations.json"
+    def test_read_nonexistent_file(self):
+        """Проверяет чтение несуществующего файла."""
+        filepath = "nonexistent_transactions.json"
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(transactions, [])
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,6 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()  # Загружаем переменные окружения из .env
-
 class ExternalAPIError(Exception):
     """
     Исключение, которое возникает при ошибке обращения к внешнему API.
@@ -34,7 +33,7 @@ def get_currency_rate(from_currency, to_currency, amount):
 
     try:
         response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Проверка на ошибки HTTP
+        response.raise_for_status()
         data = response.json()
         return data['result']
     except requests.exceptions.RequestException as e:
@@ -59,7 +58,7 @@ def convert_amount_to_rub(transaction):
         return float(amount)
     elif currency in ("USD", "EUR"):
         try:
-           result = get_currency_rate(currency, "RUB")
+            result = get_currency_rate(currency, "RUB")
             return round(result, 2)
         except ExternalAPIError as e:
             print(f"Ошибка конвертации: {e}")

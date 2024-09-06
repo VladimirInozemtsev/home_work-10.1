@@ -1,5 +1,5 @@
 import pytest
-from src.decorators import my_function, my_function_2, log
+from src.decorators import my_function_2, log
 
 
 def test_log_with_filename(tmpdir):
