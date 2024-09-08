@@ -1,6 +1,4 @@
 import unittest
-import os
-import requests
 from dotenv import load_dotenv
 from unittest.mock import patch, MagicMock
 from src.external_api import get_currency_rate, convert_amount_to_rub, ExternalAPIError
