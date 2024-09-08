@@ -6,6 +6,7 @@ def log(filename: str = None):
     Args:
         filename: Имя файла для записи логов. Если не задан, логи выводятся в консоль.
     """
+
     def decorator(func):
         def wrapper(*args, **kwargs):
             if filename:
@@ -27,7 +28,9 @@ def log(filename: str = None):
                 except Exception as e:
                     print(f"{func.__name__} error: {type(e)}. Inputs: {args}, {kwargs}")
                     raise
+
         return wrapper
+
     return decorator
 
 
