@@ -2,16 +2,14 @@ import unittest
 import json
 from src.utils import read_transactions_from_json
 
+
 class TestReadTransactionsFromJson(unittest.TestCase):
 
     def test_read_valid_json(self):
         """Проверяет чтение корректного JSON-файла."""
         filepath = "test_transactions.json"
         with open(filepath, "w") as file:
-            json.dump([
-                {"amount": 100, "currency": "USD"},
-                {"amount": 50, "currency": "EUR"}
-            ], file)
+            json.dump([{"amount": 100, "currency": "USD"}, {"amount": 50, "currency": "EUR"}], file)
 
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(len(transactions), 2)
@@ -53,5 +51,6 @@ class TestReadTransactionsFromJson(unittest.TestCase):
         transactions = read_transactions_from_json(filepath)
         self.assertEqual(transactions, [])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
