@@ -20,6 +20,9 @@ utils_file_handler.setFormatter(utils_formatter)
 utils_logger.addHandler(utils_file_handler)
 
 
+
+utils_logger = logging.getLogger(__name__)
+
 def read_transactions_from_json(filepath):
     """
     Читает данные о финансовых транзакциях из JSON-файла.
@@ -41,20 +44,28 @@ def read_transactions_from_json(filepath):
             utils_logger.debug(f"Данные из файла: {data}")
             if isinstance(data, list):
                 utils_logger.info(f"Успешное чтение транзакций из файла: {filepath}")
-                return data  # return внутри функции
+                return data
             else:
                 utils_logger.warning(f"Файл {filepath} содержит некорректные данные (не список).")
-                return []  # return внутри функции
+                return []
     except FileNotFoundError:
         utils_logger.warning(f"Файл {filepath} не найден.")
-        return []  # return внутри функции
+        return []
     except json.JSONDecodeError:
         utils_logger.error(f"Ошибка декодирования JSON в файле {filepath}.")
-        return []  # return внутри функции
+        return []
 
 
 # Получаем путь к файлу operations.json
-filepath = os.path.join(project_dir, "data", "operations.json")
+#filepath = os.path.join(project_dir, "data", "operations.json")
 
 # Вызываем функцию read_transactions_from_json
-transactions = read_transactions_from_json(filepath)
+#transactions = read_transactions_from_json(filepath)
+#transactions = [
+#    {'id': 1, 'state': 'EXECUTED', 'date': '2023-10-26T10:00:00Z', 'description': 'Перевод на счет'},
+#    {'id': 2, 'state': 'CANCELED', 'date': '2023-10-25T14:30:00Z', 'description': 'Покупка в интернет-магазине'},
+#    {'id': 3, 'state': 'EXECUTED', 'date': '2023-10-24T12:15:00Z', 'description': 'Оплата услуг'}
+#]
+#filtered_transactions = [transaction for transaction in transactions if transaction.get("state")]
+
+#print(filtered_transactions)
