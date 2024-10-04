@@ -1,8 +1,8 @@
 import logging
 from datetime import datetime
 import os
-from utils import read_transactions_from_json
-from read_transactions import read_transactions_from_excel, read_transactions_from_csv
+from src.utils import read_transactions_from_json
+from src.read_transactions import read_transactions_from_excel, read_transactions_from_csv
 import re
 from collections import Counter
 
@@ -84,23 +84,26 @@ def filter_transactions_by_currency(transactions):
 
 def count_transactions_by_category(transactions, categories):
     """
-    Подсчет количества операций по каждой категории.
+    Подсчет количества транзакций в каждой категории.
 
     Args:
-        transactions: Список словарей с транзакциями.
+        transactions: Список словарей с данными о транзакциях.
         categories: Список категорий операций.
 
     Returns:
-        Словарь, где ключ — название категории, значение — количество операций.
+        Словарь, в котором ключи — это названия категорий, а значения — это количество операций в каждой категории.
     """
-    utils_logger.debug(f"Подсчет количества операций по категориям: {categories}")
-    category_counts = Counter()  # Используем Counter для подсчета
+    category_counts = {}
     for transaction in transactions:
         for category in categories:
-            if category.lower() in transaction["description"].lower():
-                category_counts[category] += 1
-    return dict(category_counts)
-
+            if category.lower() in transaction['description'].lower():
+                if category in category_counts:
+                    category_counts[category] += 1
+                else:
+                    category_counts[category] = 1
+                # Прерываем цикл по категориям, если категория уже найдена
+                break
+    return category_counts
 
 def format_transaction(transaction):
     """
