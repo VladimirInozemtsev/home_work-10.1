@@ -6,7 +6,6 @@ from src.read_transactions import read_transactions_from_csv, read_transactions_
 
 class TestReadTransactions(unittest.TestCase):
 
-
     @patch("openpyxl.load_workbook", new_callable=MagicMock)
     def test_read_transactions_from_excel(self, mock_load_workbook):
         mock_workbook = MagicMock()

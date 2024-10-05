@@ -1,6 +1,7 @@
 import re
 from typing import List, Dict
 
+
 def filter_transactions_by_description(transactions: List[Dict], search_string: str) -> List[Dict]:
     """
     Фильтрация транзакций по строке поиска в описании.
@@ -14,7 +15,7 @@ def filter_transactions_by_description(transactions: List[Dict], search_string: 
     """
     filtered_transactions = []
     for transaction in transactions:
-        if re.search(search_string, transaction['description'], re.IGNORECASE):
+        if re.search(search_string, transaction["description"], re.IGNORECASE):
             filtered_transactions.append(transaction)
     return filtered_transactions
 
@@ -33,7 +34,7 @@ def count_transactions_by_category(transactions: List[Dict], categories: List[st
     category_counts = {}
     for transaction in transactions:
         for category in categories:
-            if category.lower() in transaction['description'].lower():
+            if category.lower() in transaction["description"].lower():
                 if category in category_counts:
                     category_counts[category] += 1
                 else:

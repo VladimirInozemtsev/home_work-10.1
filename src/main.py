@@ -43,7 +43,7 @@ def filter_transactions_by_word(transactions, word):
     utils_logger.debug(f"Фильтрация транзакций по слову в описании: {word}")
     pattern = re.compile(word, re.IGNORECASE)
 
-    return [transaction for transaction in transactions if pattern.search(transaction['description'])]
+    return [transaction for transaction in transactions if pattern.search(transaction["description"])]
 
 
 def sort_transactions_by_date(transactions, order):
@@ -59,9 +59,9 @@ def sort_transactions_by_date(transactions, order):
     """
     utils_logger.debug(f"Сортировка транзакций по дате: {order}")
     if order == "по возрастанию":
-        return sorted(transactions, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%dT%H:%M:%SZ'))
+        return sorted(transactions, key=lambda x: datetime.strptime(x["date"], "%Y-%m-%dT%H:%M:%SZ"))
     elif order == "по убыванию":
-        return sorted(transactions, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%dT%H:%M:%SZ'), reverse=True)
+        return sorted(transactions, key=lambda x: datetime.strptime(x["date"], "%Y-%m-%dT%H:%M:%SZ"), reverse=True)
     else:
         utils_logger.warning(f"Неверный порядок сортировки: {order}. Возвращаю исходный список")
         return transactions
@@ -78,8 +78,11 @@ def filter_transactions_by_currency(transactions):
         Список словарей с отфильтрованными транзакциями.
     """
     utils_logger.debug(f"Фильтрация транзакций по валюте: RUB")
-    return [transaction for transaction in transactions if
-            "operationAmount" in transaction and transaction["operationAmount"]["currency"]["code"] == "RUB"]
+    return [
+        transaction
+        for transaction in transactions
+        if "operationAmount" in transaction and transaction["operationAmount"]["currency"]["code"] == "RUB"
+    ]
 
 
 def count_transactions_by_category(transactions, categories):
@@ -93,17 +96,14 @@ def count_transactions_by_category(transactions, categories):
     Returns:
         Словарь, в котором ключи — это названия категорий, а значения — это количество операций в каждой категории.
     """
-    category_counts = {}
+    utils_logger.debug(f"Подсчет количества операций по категориям: {categories}")
+    category_counts = Counter()  # Используем Counter для подсчета
     for transaction in transactions:
         for category in categories:
-            if category.lower() in transaction['description'].lower():
-                if category in category_counts:
-                    category_counts[category] += 1
-                else:
-                    category_counts[category] = 1
-                # Прерываем цикл по категориям, если категория уже найдена
-                break
-    return category_counts
+            if category.lower() in transaction["description"].lower():
+                category_counts[category] += 1
+    return dict(category_counts)  # Преобразуем Counter в словарь
+
 
 def format_transaction(transaction):
     """
@@ -115,32 +115,32 @@ def format_transaction(transaction):
     Returns:
         Отформатированная строка с данными о транзакции.
     """
-    date_obj = datetime.strptime(transaction['date'], '%Y-%m-%dT%H:%M:%SZ')
-    formatted_date = date_obj.strftime('%d.%m.%Y')
+    date_obj = datetime.strptime(transaction["date"], "%Y-%m-%dT%H:%M:%SZ")
+    formatted_date = date_obj.strftime("%d.%m.%Y")
 
-    from_account = transaction.get('from')  # Используйте .get()
-    to_account = transaction.get('to')
+    from_account = transaction.get("from")  # Используйте .get()
+    to_account = transaction.get("to")
 
     # Извлечение значения amount из разных форматов
     if "operationAmount" in transaction:
         amount = f"{transaction['operationAmount']['amount']} {transaction['operationAmount']['currency']['code']}"
     elif "amount" in transaction:
-        amount = f"{transaction['amount']} {transaction['currency_code']}"  # Предположим, что в CSV и XLSX "amount" и "currency_code" отдельные ключи
+        amount = f"{transaction['amount']} {transaction['currency_code']}"
     else:
         amount = "Неизвестная сумма"
 
-    description = transaction['description']
+    description = transaction["description"]
 
     formatted_transaction = f"{formatted_date} {description}\n"
 
     if from_account is not None:
-        if from_account.startswith('Счет'):
+        if from_account.startswith("Счет"):
             formatted_transaction += f"Счет {from_account[-4:]}\n"
         else:
             formatted_transaction += f"{from_account}\n"
 
     if to_account is not None:
-        if to_account.startswith('Счет'):
+        if to_account.startswith("Счет"):
             formatted_transaction += f"Счет {to_account[-4:]}\n"
         else:
             formatted_transaction += f"{to_account}\n"
@@ -157,7 +157,7 @@ def main():
     logging.basicConfig(level=logging.DEBUG)
     print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(current_dir, '..', 'data')
+    data_dir = os.path.join(current_dir, "..", "data")
 
     while True:
         print("Выберите необходимый пункт меню:")
@@ -165,16 +165,16 @@ def main():
         print("2. Получить информацию о транзакциях из CSV-файла")
         print("3. Получить информацию о транзакциях из XLSX-файла")
         choice = input()
-        if choice == '1':
-            filepath = os.path.join(data_dir, 'operations.json')
+        if choice == "1":
+            filepath = os.path.join(data_dir, "operations.json")
             transactions = read_transactions_from_json(filepath)
             break
-        elif choice == '2':
-            filepath = os.path.join(data_dir, 'transactions.csv')
+        elif choice == "2":
+            filepath = os.path.join(data_dir, "transactions.csv")
             transactions = read_transactions_from_csv(filepath)
             break
-        elif choice == '3':
-            filepath = os.path.join(data_dir, 'transactions_excel.xlsx')
+        elif choice == "3":
+            filepath = os.path.join(data_dir, "transactions_excel.xlsx")
             transactions = read_transactions_from_excel(filepath)
             break
         else:
@@ -188,11 +188,11 @@ def main():
         if transactions:
             break
         else:
-            print(f"Статус операции \"{status}\" недоступен.")
+            print(f'Статус операции "{status}" недоступен.')
 
-    print(f"Операции отфильтрованы по статусу \"{status}\"")
+    print(f'Операции отфильтрованы по статусу "{status}"')
 
-    sort_by_date = input("Отсортировать операции по дате? Да/Нет: ").lower() == 'да'
+    sort_by_date = input("Отсортировать операции по дате? Да/Нет: ").lower() == "да"
     if sort_by_date:
         while True:
             order = input("Отсортировать по возрастанию или по убыванию? (по возрастанию/по убыванию): ").lower()
@@ -202,12 +202,13 @@ def main():
             else:
                 print(f"Неверный порядок сортировки: {order}")
 
-    filter_by_currency = input("Выводить только рублевые транзакции? Да/Нет: ").lower() == 'да'
+    filter_by_currency = input("Выводить только рублевые транзакции? Да/Нет: ").lower() == "да"
     if filter_by_currency:
         transactions = filter_transactions_by_currency(transactions)
 
-    filter_by_word = input(
-        "Отфильтровать список транзакций по определенному слову в описании? Да/Нет: ").lower() == 'да'
+    filter_by_word = (
+        input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет: ").lower() == "да"
+    )
     if filter_by_word:
         word = input("Введите слово для поиска: ")
         transactions = filter_transactions_by_word(transactions, word)
